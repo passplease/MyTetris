@@ -14,12 +14,16 @@ public class MainFrame {
     public static final int height = 20;// 高20个方块
     public static final int length = 10;// 长10个方块
     private static final Map<String,FunctionalInterface> map = new HashMap<>();
-    public static int ScreenWidth;
-    public static int ScreenHeight;
+    public static int ScreenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+    public static int ScreenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+    public static final JTextArea text = new JTextArea(1 + ScreenWidth / 100,1 + ScreenHeight / 100);
+    // 写玩家分数
+    public static int score = 0;
     public static int x;// 方块坐标，以左侧为0
     public static int y;// 方块坐标，以上方为0
     public static Color[][] color = new Color[length][height];
     protected static Blocks block;
+    protected static Blocks nextBlock;
 
     public static void initialize(){
         ScreenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
@@ -44,10 +48,13 @@ public class MainFrame {
     }
     public static void repaint(){
         block.show();
+        nextBlock.readyShow();
         frame.repaint();
         panel.repaint();
     }
+    public static void sayText(String text){}
     public static Blocks getBlock(){
         return block;
     }
+    public static void EndGame(){}
 }

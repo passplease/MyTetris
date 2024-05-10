@@ -31,6 +31,8 @@ public interface Blocks {
         // 如果不可以下落就执行solidified
     }
     default boolean spawn(){
+        block = this;
+        readyShow();
         x = length / 2 + 1;
         y = 0;
         if(examineNow()){
@@ -39,4 +41,8 @@ public interface Blocks {
         }else return false;
     }
     // 返回false时代表已经失败
+    default void readyShow(){
+        nextBlock = this;
+    }
+    // 在等待区域显示
 }
