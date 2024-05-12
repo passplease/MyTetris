@@ -25,7 +25,6 @@ public interface Blocks {
             return true;
         }else {
             solidified();
-            repaint();
             return false;
         }
         // 如果不可以下落就执行solidified
@@ -35,10 +34,7 @@ public interface Blocks {
         readyShow();
         x = length / 2 + 1;
         y = 0;
-        if(examineNow()){
-            repaint();
-            return true;
-        }else return false;
+        return examineNow();
     }
     // 返回false时代表已经失败
     default void readyShow(){

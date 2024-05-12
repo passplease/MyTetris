@@ -1,11 +1,14 @@
 package Project.GUI;
 
+import Project.Listener.FrameListener;
 import Project.SomeInterface.FunctionalInterface;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+
+import static Project.Main.Timer.timer;
 
 public class MainFrame {
     public static final String title = "我的俄罗斯方块";
@@ -26,15 +29,19 @@ public class MainFrame {
     protected static Blocks nextBlock;
 
     public static void initialize(){
+        frame.setLayout(null);// 禁用布局管理器，这样可以自己设置组件位置
         ScreenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
         ScreenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
-        frame.setSize(1000,500);
+        frame.setSize(600,500);
+        frame.addComponentListener(new FrameListener());// 添加组件监听器，监听窗口变化
+        panel.setBackground(Color.BLACK);
         frame.add(panel);
+        panel.setSize(length * Blocks.size,frame.getHeight());
+        panel.setLocation(frame.getWidth() / 2 + 1,0);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         for(Map.Entry<String, FunctionalInterface> mapping : map.entrySet()){
             mapping.getValue().register();//执行记录的操作
         }
-        color = null;
     }
     public static void register(FunctionalInterface function,boolean time,String text){
         if(time)
@@ -56,5 +63,4 @@ public class MainFrame {
     public static Blocks getBlock(){
         return block;
     }
-    public static void EndGame(){}
 }

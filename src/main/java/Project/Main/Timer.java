@@ -17,16 +17,8 @@ public class Timer {
                         if(!getBlock().spawn())
                             EndGame();
                     }
-                    for (int i = 0; i < length - 1; i++) {
-                        for (int j = 0; j < height - 1; j++) {
-                            if(color[i][j] != color[i + 1][j]){
-                                break;
-                            }else if (j == height - 2)
-                                for (int k = 0; k < height - 1; k++) {
-                                    color[i][k] = null;
-                                }
-                        }
-                    }
+                    eliminateColor();
+                    spawnNextBlock();
                     repaint();
                     Thread.sleep(time);
                 }
@@ -45,4 +37,30 @@ public class Timer {
             这样，即使在程序进行其他工作时，按键事件仍然可以得到及时的处理。
         */
     };
+    public static void EndGame(){
+        PauseGame();
+        frame.dispose();
+    }
+    public static void PauseGame(){
+        timer.cancel(true);
+    }
+    public static void spawnNextBlock(){}
+    public static void eliminateColor(){
+        for (int i = 0; i < height - 1; i++) {
+            for (int j = 0; j < length - 1; j++) {
+                if(color[j][i] != color[j+1][i])
+                    break;
+                else if(j == length - 2){
+                    for (j = 0;j < length;j++){
+                        for (int k = i; k < height; k++) {
+                            if(k < height - 1)
+                                color[j][k] = color[j][k+1];
+                            else color[j][k] = null;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
 }
