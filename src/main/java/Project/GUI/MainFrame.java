@@ -2,7 +2,6 @@ package Project.GUI;
 
 import Project.Listener.FrameListener;
 import Project.SomeInterface.FunctionalInterface;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -17,6 +16,9 @@ public class MainFrame {
     public static final int length = 10;// 长10个方块
     private static final Map<String,FunctionalInterface> map = new HashMap<>();
     public static final JTextArea text = new JTextArea();
+    public static void setBounds(){
+        text.setBounds(scorePanel.getX() + scorePanel.getWidth() / 2 - 5,scorePanel.getY() + scorePanel.getHeight() / 10,100,40);
+    }
     // 写玩家分数
     public static int score = 0;
     public static int startPaintHeight;
@@ -36,15 +38,29 @@ public class MainFrame {
             }
         }
     };
+    public static final JPanel panel = new JPanel();
+    public static final JPanel scorePanel = new JPanel(){
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+        }
+    };
     protected static Blocks block;
     protected static Blocks nextBlock;
 
     public static void initialize(){
         frame.setLayout(null);// 禁用布局管理器，这样可以自己设置组件位置
-        frame.setSize(600,500);
+        frame.setBounds(100,200,600,500);// 设置显示位置
         frame.addComponentListener(new FrameListener());// 添加组件监听器，监听窗口变化
-        colorPanel.setBackground(Color.BLACK);
+        colorPanel.setBackground(new Color(0x3D3B3B));
+        scorePanel.setBackground(new Color(42,172,184));
+        panel.setBackground(new Color(0x321F2424, true));
         frame.add(colorPanel);
+        frame.add(scorePanel);
+        frame.add(panel);
+        scorePanel.add(text);
+        setBounds();
+        text.setEditable(false);
         frame.setBackground(Color.BLUE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         for (int i = 0; i < length; i++) {
@@ -58,6 +74,9 @@ public class MainFrame {
         block = randomGetBlock();
         block.spawn();
         nextBlock = randomGetBlock();
+        text.setFont(new Font("楷体",Font.BOLD,20));
+        text.setBackground(new Color(0,0,0,0));
+        text.append(String.valueOf(score));
     }
     public static void register(FunctionalInterface function,boolean time,String text){
         if(time)
@@ -70,6 +89,7 @@ public class MainFrame {
         register(function,false,text);
     }
     public static void repaint(){
+        text.repaint();
         block.show();
         nextBlock.readyShow();
         colorPanel.repaint();
@@ -84,5 +104,8 @@ public class MainFrame {
         block.spawn();
         nextBlock = randomGetBlock();
         nextBlock.readyShow();
+    }
+    public static void throwError(){
+        sayText("游戏出现故障！请重新启动！");
     }
 }

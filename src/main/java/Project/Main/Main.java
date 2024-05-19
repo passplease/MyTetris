@@ -9,7 +9,7 @@ import Project.Listener.Listener;
 import static Project.GUI.MainFrame.*;
 
 public class Main {
-    public static final Timer timer = new Timer();
+    public static volatile Timer timer = new Timer();
     public static void main(String[] args) {
 
         I_Shape_Blocks.register();
@@ -20,6 +20,6 @@ public class Main {
         MainFrame.initialize();
 
         frame.setVisible(true);
-        timer.execute();// 启动计时器
+        //timer.execute();// 启动计时器
     }
 }
