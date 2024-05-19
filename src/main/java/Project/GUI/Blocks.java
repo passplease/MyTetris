@@ -32,6 +32,7 @@ public abstract class Blocks {
             return true;
         }else {
             solidified();
+            addScore();
             return false;
         }
         // 如果不可以下落就执行solidified

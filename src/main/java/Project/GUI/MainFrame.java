@@ -15,12 +15,11 @@ public class MainFrame {
     public static final int height = 20;// 高20个方块
     public static final int length = 10;// 长10个方块
     private static final Map<String,FunctionalInterface> map = new HashMap<>();
-    public static final JTextArea text = new JTextArea();
-    public static void setBounds(){
-        text.setBounds(scorePanel.getX() + scorePanel.getWidth() / 2 - 5,scorePanel.getY() + scorePanel.getHeight() / 10,100,40);
+    public static void addScore() {
+        text.repaint();
+        MainFrame.score++;
     }
-    // 写玩家分数
-    public static int score = 0;
+    private static int score = 0;
     public static int startPaintHeight;
     public static int x;// 方块坐标，以左侧为0
     public static int y;// 方块坐标，以上方为0
@@ -47,6 +46,8 @@ public class MainFrame {
     };
     protected static Blocks block;
     protected static Blocks nextBlock;
+    public static final Text text = new Text("您当前分数：\n" + score);
+    // 写玩家分数
 
     public static void initialize(){
         frame.setLayout(null);// 禁用布局管理器，这样可以自己设置组件位置
@@ -59,8 +60,7 @@ public class MainFrame {
         frame.add(scorePanel);
         frame.add(panel);
         scorePanel.add(text);
-        setBounds();
-        text.setEditable(false);
+        text.setTextLocation();
         frame.setBackground(Color.BLUE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         for (int i = 0; i < length; i++) {
@@ -74,9 +74,6 @@ public class MainFrame {
         block = randomGetBlock();
         block.spawn();
         nextBlock = randomGetBlock();
-        text.setFont(new Font("楷体",Font.BOLD,20));
-        text.setBackground(new Color(0,0,0,0));
-        text.append(String.valueOf(score));
     }
     public static void register(FunctionalInterface function,boolean time,String text){
         if(time)

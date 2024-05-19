@@ -11,22 +11,6 @@ public class Timer extends SwingWorker<Integer, Integer>{
     // 一个加载周期的时长，也控制方块下落速度
     private static volatile boolean working = true;
     private static final Object lock = new Object();
-    private static final Runnable planning = () -> {
-        if(working && frame.isFocusable()){
-            if(!getBlock().drop()){
-                if(!getBlock().spawn())
-                    end();
-                eliminateColor();
-                spawnNextBlock();
-            }
-            repaint();
-        }else try {
-                lock.wait();
-            } catch (InterruptedException e) {
-                MainFrame.throwError();
-                throw new RuntimeException(e);
-            }
-    };
     // 注：下面那个是HTML标签
     /**<pre><font color=yellow >
      *      当在 <code>SwingWorker</code> 的 <code>doInBackground()</code>方法中需要对 Swing 组件进行操作时，
@@ -69,7 +53,20 @@ public class Timer extends SwingWorker<Integer, Integer>{
     protected Integer doInBackground(){// 这里面进行计时规划操作
         try {
             while (true) {
-                SwingUtilities.invokeLater(planning);
+                if(working && frame.isFocusable()){
+                    if(!getBlock().drop()){
+                        if(!getBlock().spawn())
+                            end();
+                        eliminateColor();
+                        spawnNextBlock();
+                    }
+                    repaint();
+                }else try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    MainFrame.throwError();
+                    throw new RuntimeException(e);
+                }
                 System.out.println("Timer is running");
                 Thread.sleep(time);
             }

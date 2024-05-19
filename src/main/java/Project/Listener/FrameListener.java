@@ -27,7 +27,7 @@ public class FrameListener implements ComponentListener {
         colorPanel.setSize(dividedPoint2 - dividedPoint1,height);
         scorePanel.setLocation(dividedPoint2,0);
         scorePanel.setSize(frame.getWidth() + X - dividedPoint2,height);
-        setBounds();
+        text.setTextLocation();
         calculateStartPaintHeight();
     }
 
